@@ -50,6 +50,23 @@ export async function refreshAccessToken(refreshToken: string): Promise<TokenRes
     return response.json();
 }
 
+export async function getActivityById(accessToken: string, id: string): Promise<StravaActivity> {
+    const response = await fetch(
+        `https://www.strava.com/api/v3/activities/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Failed to fetch activity details");
+    }
+
+    return response.json();
+}
+
 export async function getActivities(accessToken: string, page = 1, perPage = 30): Promise<StravaActivity[]> {
     const response = await fetch(
         `https://www.strava.com/api/v3/athlete/activities?page=${page}&per_page=${perPage}`,
